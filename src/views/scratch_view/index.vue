@@ -1,113 +1,103 @@
 <template>
-  <v-container class="pa-0 ma-0">
-    <v-col class="text-center pa-0 ma-0">
+  <v-container id="contain" style="mx-1">
+    <v-col class="text-center">
       <v-row>
-        <p class="title text-center ml-8">{{id}}年生</p>
+        <p class="title text-center">{{ id }}年生</p>
       </v-row>
-      <v-row id="body">
-        <template class="ma-0 pa-0 mb-6">
-          <span v-for="scratchData in scratchData[id]" :key="scratchData.name"
-                class="ma-0 pa-0 mb-6"
-          >
-          <v-card
-              :class="cardsClass"
-              :width="scratchWidth"
-          >
-            <p>{{ scratchData.name }}</p>
-            <p><iframe
-                class="ma-0 pa-0 mb-6"
-                :src="scratchData.url"
-                :width="scratchWidth"
-                :height="scratchHeight"
-                allowtransparency="true"
-                frameborder="0"
-                scrolling="no"
-                allowfullscreen
-            ></iframe></p>
-          </v-card>
+      <v-row id="body" cols="12">
+        <template>
+          <v-layout row class="mx-1" style="flex-wrap: wrap">
+            <span
+              v-for="scratchData in scratchData[id]"
+              :key="scratchData.name"
+              class="d-flex flex-wrap"
+              style="flex-wrap: wrap"
+            >
+              <v-col>
+                <v-card
+                  style="line-height: 0px; flex-wrap: wrap"
+                  class="card mb-15"
+                >
+                  <p class="pt-6 font-weight-bold">{{ scratchData.title }}</p>
+                  <p class="mt-6">{{ scratchData.name }}</p>
+                  <v-btn
+                    color="primary"
+                    dark
+                    @click.stop="
+                      text = scratchData.comment;
+                      dialog = true;
+                    "
+                    style="position: absolute; top: 10px; right: 10px"
+                    icon
+                    fab
+                  >
+                    <v-icon dark>mdi-information</v-icon>
+                  </v-btn>
+
+                  <p>
+                    <iframe
+                      class="mx-0 mt-3 pa-0 mb-6"
+                      :src="scratchData.url"
+                      width="100%"
+                      allowtransparency="true"
+                      frameborder="0"
+                      scrolling="no"
+                      allowfullscreen
+                    ></iframe>
+                  </p>
+                </v-card>
+              </v-col>
             </span>
+          </v-layout>
         </template>
-
       </v-row>
-
-
     </v-col>
-  </v-container>
+
+    <template>
+      <v-row justify="center">
+        <v-dialog v-model="dialog" max-width="600px">
+          <v-card>
+            <v-card-title class="headline"> コメント </v-card-title>
+
+            <v-card-text>
+              {{ text }}
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </template></v-container
+  >
 </template>
+
+<style>
+.card {
+  height: 40vw;
+  width: 40vw;
+}
+iframe {
+  width: 100%;
+  height: 40vw;
+}
+@media only screen and (max-width: 480px) {
+  .card {
+    height: 85vw;
+    width: 85vw;
+  }
+  iframe {
+    width: 100%;
+    height: 85vw;
+  }
+}
+</style>
 
 <script>
 export default {
-  props: ["id","scratchData"],
-  computed:{
-    cardsClass(){
-      const displayWidth = document.body.clientWidth;
-      const displayHeight = document.body.clientHeight;
-      if(displayWidth>=displayHeight){
-
-        return "ml-10 mb-6 "
-
-      }else{
-        return "ma-0 pa-n2 mb-6"
-      }
-    },
-    scratchWidth(){
-      const displayWidth = document.body.clientWidth;
-      const displayHeight = document.body.clientHeight;
-      // const ScratchIframeRatio = 402 / 485;
-
-      /* if
-        ----------
-        |         |
-        ----------
-      */
-      if (displayWidth >= displayHeight) {
-        // iframeElm.style.height = ToString_And_AddPx(displayHeight);
-        return ToString_And_AddPx(
-            (displayWidth - 150 ) / 2
-        );
-      } else {
-        return ToString_And_AddPx(displayWidth);
-        // iframeElm.style.height = ToString_And_AddPx(
-        //     displayWidth * ScratchIframeRatio
-        // );
-      }
-
-      function ToString_And_AddPx(num) {
-        return `${String(num)}px`;
-      }
-    },
-    scratchHeight(){
-      const displayWidth = document.body.clientWidth;
-      const displayHeight = document.body.clientHeight;
-      const ScratchIframeRatio = 402 / 485;
-
-      if (displayWidth >= displayHeight) {
-        return  ToString_And_AddPx((displayWidth - 150 ) * ( ScratchIframeRatio) / 2);
-      } else {
-        return ToString_And_AddPx(
-            displayWidth * ScratchIframeRatio
-        );
-      }
-      function ToString_And_AddPx(num) {
-        return `${String(num)}px`;
-      }
-    },
-    Height(){
-      const displayWidth = window.innerWidth;
-      const displayHeight = window.innerHeight;
-      const ScratchIframeRatio = 402 / 485;
-
-      if (displayWidth > displayHeight) {
-        return  ToString_And_AddPx((displayWidth * ( ScratchIframeRatio) / 2) + 20);
-      } else {
-        return ToString_And_AddPx(
-            displayWidth * ScratchIframeRatio + 20
-        );
-      }
-      function ToString_And_AddPx(num) {
-        return `${String(num)}px`;
-      }
-    }
-  }
+  props: ["id", "scratchData"],
+  data() {
+    return {
+      dialog: false,
+      text: "",
+    };
+  },
 };
 </script>

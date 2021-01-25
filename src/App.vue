@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark hide-on-scroll height="40">
+    <v-app-bar app color="primary" dark height="40">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <div class="d-flex align-center">
         <v-img
@@ -53,7 +53,7 @@
 
 
     <v-main v-if="isLoaded" :style="themeColor">
-      <router-view :scratchData="scratchData" />
+      <router-view :scratchData="scratchData" :yearsList="yearsList" />
     </v-main>
   </v-app>
 </template>
