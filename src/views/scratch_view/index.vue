@@ -16,11 +16,11 @@
               <v-col>
                 <v-card
                   style="line-height: 0px; flex-wrap: wrap"
-                  class="card mb-15"
+                  class="card"
                 >
                   <p class="pt-6 font-weight-bold">{{ scratchData.title }}</p>
                   <p class="mt-6">{{ scratchData.name }}</p>
-                  <v-btn
+                  <!-- <v-btn
                     color="primary"
                     dark
                     @click.stop="
@@ -32,19 +32,22 @@
                     fab
                   >
                     <v-icon dark>mdi-information</v-icon>
-                  </v-btn>
+                  </v-btn> -->
 
                   <p>
                     <iframe
-                      class="mx-0 mt-3 pa-0 mb-6"
+                      class="mx-0 mt-3 pa-0"
                       :src="scratchData.url"
-                      width="100%"
+                      :height="height()"
                       allowtransparency="true"
                       frameborder="0"
                       scrolling="no"
                       allowfullscreen
                     ></iframe>
                   </p>
+                  <template>
+                  <p class="text-justify font-weight-medium ma-3 mt-0 pb-3" style="line-height: 25px;">{{scratchData.comment}}</p>
+                  </template>
                 </v-card>
               </v-col>
             </span>
@@ -53,7 +56,7 @@
       </v-row>
     </v-col>
 
-    <template>
+    <!-- <template>
       <v-row justify="center">
         <v-dialog v-model="dialog" max-width="600px">
           <v-card>
@@ -65,27 +68,28 @@
           </v-card>
         </v-dialog>
       </v-row>
-    </template></v-container
+    </template>-->
+    </v-container
   >
-</template>
+</template> 
 
 <style>
 .card {
-  height: 40vw;
+  /* height: calc( 40vw + 200px ); */
   width: 40vw;
 }
 iframe {
   width: 100%;
-  height: 40vw;
+  /* height: 40vw; */
 }
 @media only screen and (max-width: 480px) {
   .card {
-    height: 85vw;
+    /* height: 85vw; */
     width: 85vw;
   }
   iframe {
     width: 100%;
-    height: 85vw;
+    /* height: 85vw; */
   }
 }
 </style>
@@ -93,11 +97,19 @@ iframe {
 <script>
 export default {
   props: ["id", "scratchData"],
-  data() {
-    return {
-      dialog: false,
-      text: "",
-    };
+  // data() {
+  //   return {
+  //     dialog: false,
+  //     text: "",
+  //   };
+  // },
+  methods:{
+    height(){
+      return document.querySelector('iframe')?.clientWidth / (485 / 402) || "50vw"
+    },
   },
+  mounted(){
+    document.querySelector("iframe").onload = () => this.$forceUpdate()
+  }
 };
 </script>
